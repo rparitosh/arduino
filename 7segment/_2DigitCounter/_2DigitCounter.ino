@@ -58,7 +58,9 @@ void displayNumber(int num, int location){
       digitalWrite(location, HIGH);
       for (int i=0; i<8; i++){
         digitalWrite(prevLed,HIGH);
+        
         digitalWrite(narr[i],LOW);
+       
         prevLed = narr[i];
       }
       digitalWrite(location, LOW);
