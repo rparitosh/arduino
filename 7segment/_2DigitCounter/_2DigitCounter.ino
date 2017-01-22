@@ -4,6 +4,8 @@ int selectedNumber = 0;
 int switchPin = 11;
 boolean lastButton = LOW;
 
+int pinOnes = 13;
+int pinTens = 12;
 
 
 
@@ -31,7 +33,10 @@ void setup() {
       pinMode(i,OUTPUT);
       digitalWrite(i,HIGH);
     }
-  
+  pinMode(pinOnes, OUTPUT);
+  pinMode(pinTens, OUTPUT);
+  digitalWrite(pinOnes, LOW);
+  digitalWrite(pinTens, LOW);
 }
 
 void loop() {
@@ -39,19 +44,24 @@ void loop() {
 
   if (isSwitchPressed()){
     selectedNumber++;
-    selectedNumber=selectedNumber%10;
+    selectedNumber=selectedNumber%100;
    }
-  
-  int* narr = numbers[selectedNumber];
-  int prevLed = narr[7] ;
-  
-  for (int i=0; i<8; i++){
-    digitalWrite(prevLed,HIGH);
-    digitalWrite(narr[i],LOW);
-    prevLed = narr[i];
-  
-    
-  }
+
+  displayNumber(selectedNumber/10,pinTens);
+  displayNumber(selectedNumber%10,pinOnes);
+}
+
+void displayNumber(int num, int location){
+      int* narr = numbers[num];
+      int prevLed = narr[7] ;
+
+      digitalWrite(location, HIGH);
+      for (int i=0; i<8; i++){
+        digitalWrite(prevLed,HIGH);
+        digitalWrite(narr[i],LOW);
+        prevLed = narr[i];
+      }
+      digitalWrite(location, LOW);
 }
 
 boolean isSwitchPressed(){
